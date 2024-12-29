@@ -10,17 +10,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Pizzas")
+@Table(name = "pizzas")
 public class Pizza {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "Name")
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "Price")
+	@Column(name = "price", nullable = false)
 	private BigDecimal price;
+
+	public Pizza() {
+
+	}
 
 	public Pizza(long id, String name, BigDecimal price) {
 		super();

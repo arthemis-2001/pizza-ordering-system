@@ -12,25 +12,29 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Customers")
+@Table(name = "customers")
 public class Customer {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "Name")
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "Address")
+	@Column(name = "address")
 	private String address;
 
-	@OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Order> items;
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Order> orders;
 
-	public Customer(long id, List<Order> items, String name, String address) {
+	public Customer() {
+
+	}
+
+	public Customer(long id, List<Order> orders, String name, String address) {
 		super();
 		this.id = id;
-		this.items = items;
+		this.orders = orders;
 		this.name = name;
 		this.address = address;
 	}
@@ -51,12 +55,12 @@ public class Customer {
 		this.address = address;
 	}
 
-	public List<Order> getItems() {
-		return items;
+	public List<Order> getOrders() {
+		return orders;
 	}
 
-	public void setItems(List<Order> items) {
-		this.items = items;
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 }
