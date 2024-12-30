@@ -1,4 +1,4 @@
-package com.artemtartakovsky.pizza_ordering_system.beans;
+package com.artemtartakovsky.pizza_ordering_system.model;
 
 import java.math.BigDecimal;
 
@@ -16,10 +16,10 @@ public class Pizza {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "name", nullable = false)
+	@Column(nullable = false, unique = true, updatable = false)
 	private String name;
 
-	@Column(name = "price", nullable = false)
+	@Column(nullable = false)
 	private BigDecimal price;
 
 	public Pizza() {
@@ -31,6 +31,14 @@ public class Pizza {
 		this.id = id;
 		this.name = name;
 		this.price = price;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -47,5 +55,10 @@ public class Pizza {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "Pizza [id=" + id + ", name=" + name + ", price=" + price + "]";
 	}
 }

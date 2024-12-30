@@ -1,5 +1,6 @@
-package com.artemtartakovsky.pizza_ordering_system.beans;
+package com.artemtartakovsky.pizza_ordering_system.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -18,25 +19,33 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "name", nullable = false)
+	@Column(nullable = false, unique = true, updatable = false)
 	private String name;
 
-	@Column(name = "address")
+	@Column(nullable = false)
 	private String address;
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Order> orders;
+	private List<Order> orders = new ArrayList<>();
 
 	public Customer() {
 
 	}
 
-	public Customer(long id, List<Order> orders, String name, String address) {
+	public Customer(long id, String name, String address, List<Order> orders) {
 		super();
 		this.id = id;
-		this.orders = orders;
 		this.name = name;
 		this.address = address;
+		this.orders = orders;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -63,4 +72,13 @@ public class Customer {
 		this.orders = orders;
 	}
 
+	public void addOrder(Order order) {
+		this.orders.add(order);
+		order.setCustomer(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", name=" + name + ", address=" + address + ", orders=" + orders + "]";
+	}
 }
