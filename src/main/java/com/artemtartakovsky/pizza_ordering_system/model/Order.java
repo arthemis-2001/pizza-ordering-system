@@ -4,8 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -26,7 +25,6 @@ public class Order {
 	private long id;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@ColumnDefault("now()")
 	private Instant createdAt;
 
 	@ManyToOne(cascade = CascadeType.ALL, optional = false)
@@ -83,6 +81,11 @@ public class Order {
 	public void addPizzaOrder(PizzaOrder pizzaOrder) {
 		this.pizzaOrders.add(pizzaOrder);
 		pizzaOrder.setOrder(this);
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = Instant.now();
 	}
 
 	@Override

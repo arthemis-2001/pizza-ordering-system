@@ -2,10 +2,13 @@ package com.artemtartakovsky.pizza_ordering_system.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.artemtartakovsky.pizza_ordering_system.dto.OrderDTO;
+import com.artemtartakovsky.pizza_ordering_system.dto.PizzaOrderDTO;
 import com.artemtartakovsky.pizza_ordering_system.model.Customer;
 import com.artemtartakovsky.pizza_ordering_system.model.Order;
 import com.artemtartakovsky.pizza_ordering_system.model.Pizza;
@@ -32,20 +35,27 @@ public class OrderService {
 		this.pizzaRepository = pizzaRepository;
 	}
 
-	public List<Order> getAllOrders() {
-		return orderRepository.findAll();
+	public List<OrderDTO> getAllOrders() {
+		return orderRepository.findAll().stream().map(OrderService::convertToDTO).collect(Collectors.toList());
 	}
 
-	public Optional<Order> getOrderById(Long id) {
-		return orderRepository.findById(id);
+	public Optional<OrderDTO> getOrderById(Long id) {
+		return orderRepository.findById(id).map(OrderService::convertToDTO);
 	}
 
-	public Order createOrder(long customerId, List<Long> pizzaIds, List<Integer> quantities) {
+	public OrderDTO createOrder(OrderDTO orderDTO) {
+		long customerId = orderDTO.getCustomerId();
 		Customer customer = customerRepository.findById(customerId)
 				.orElseThrow(() -> new RuntimeException("Customer not found with ID: " + customerId));
 
 		Order order = new Order();
 		order.setCustomer(customer);
+
+		List<Long> pizzaIds = orderDTO.getPizzaOrders().stream().map(PizzaOrderDTO::getPizzaId)
+				.collect(Collectors.toList());
+
+		List<Integer> quantities = orderDTO.getPizzaOrders().stream().map(PizzaOrderDTO::getQuantity)
+				.collect(Collectors.toList());
 
 		for (int i = 0; i < pizzaIds.size(); i++) {
 			long pizzaId = pizzaIds.get(i);
@@ -65,14 +75,23 @@ public class OrderService {
 
 		customerRepository.save(customer);
 
-		return order;
+		return orderDTO;
 	}
 
-	public void deletePizza(Long id) {
-		if (orderRepository.existsById(id)) {
-			orderRepository.deleteById(id);
-		} else {
-			throw new RuntimeException("Pizza not found with id: " + id);
-		}
+	public static OrderDTO convertToDTO(Order order) {
+		OrderDTO orderDTO = new OrderDTO();
+		orderDTO.setId(order.getId());
+		orderDTO.setCustomerId(order.getCustomer().getId());
+		orderDTO.setPizzaOrders(
+				order.getPizzaOrders().stream().map(OrderService::convertToDTO).collect(Collectors.toList()));
+		return orderDTO;
+	}
+
+	public static PizzaOrderDTO convertToDTO(PizzaOrder pizzaOrder) {
+		PizzaOrderDTO pizzaOrderDTO = new PizzaOrderDTO();
+		pizzaOrderDTO.setId(pizzaOrder.getId());
+		pizzaOrderDTO.setPizzaId(pizzaOrder.getPizza().getId());
+		pizzaOrderDTO.setQuantity(pizzaOrder.getQuantity());
+		return pizzaOrderDTO;
 	}
 }

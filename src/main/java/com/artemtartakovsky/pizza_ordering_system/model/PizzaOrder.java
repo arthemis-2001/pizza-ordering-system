@@ -31,7 +31,7 @@ public class PizzaOrder {
 
 	}
 
-	public PizzaOrder(long id, Order order, Pizza pizza) {
+	public PizzaOrder(long id, Order order, Pizza pizza, int quantity) {
 		super();
 		this.id = id;
 		this.order = order;
