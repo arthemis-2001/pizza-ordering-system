@@ -64,9 +64,9 @@ src/
 └── test/
     └── java/
         └── com/
-            └── example/
-                └── api/
-                    └── controller/
+            └── artemtartakovsky/
+                └── pizza_ordering_system/
+                    └── Tests for all controllers
 ```
 ## API Endpoints
 
