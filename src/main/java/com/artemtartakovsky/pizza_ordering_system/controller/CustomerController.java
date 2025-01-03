@@ -37,11 +37,18 @@ public class CustomerController {
 
 	@PostMapping
 	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
-		Customer createdCustomer = customerService.createCustomer(customerDTO);
+		if (customerDTO.getName() == null || customerDTO.getAddress() == null) {
+			return ResponseEntity.badRequest().body("Missing required fields: name and price");
+		}
 
-		URI location = URI.create("/api/customers/" + createdCustomer.getId());
-
-		return ResponseEntity.created(location).body(createdCustomer);
+		try {
+			Customer createdCustomer = customerService.createCustomer(customerDTO);
+			URI location = URI.create("/api/customers/" + createdCustomer.getId());
+			return ResponseEntity.created(location).body(createdCustomer);
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.badRequest().body("Invalid JSON payload");
+		}
 	}
 
 	@DeleteMapping("/{id}")

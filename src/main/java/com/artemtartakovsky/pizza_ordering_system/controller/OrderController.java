@@ -35,8 +35,19 @@ public class OrderController {
 
 	@PostMapping
 	public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
-		OrderDTO createdOrder = orderService.createOrder(orderDTO);
+		if (orderDTO.getCustomerId() == null) {
+			return ResponseEntity.badRequest().body("Missing required fields: getCustomerId");
+		}
 
-		return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+		try {
+			OrderDTO createdOrder = orderService.createOrder(orderDTO);
+			return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.badRequest().body("Invalid JSON payload");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+		}
 	}
 }

@@ -22,11 +22,11 @@ class PizzaControllerTests {
 	@Test
 	void testGetAllPizzas() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/pizzas")).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(3));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(3));
 	}
 
 	@Test
-	void testGetPizzaById1() throws Exception {
+	void testGetPizzaById() throws Exception {
 		long id = 1;
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/pizzas/{id}", id).contentType(MediaType.APPLICATION_JSON))
@@ -36,7 +36,7 @@ class PizzaControllerTests {
 	}
 
 	@Test
-	void testGetPizzaById2() throws Exception {
+	void testGetPizzaByIdNotFound() throws Exception {
 		long id = 99;
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/pizzas/{id}", id).contentType(MediaType.APPLICATION_JSON))
@@ -58,7 +58,20 @@ class PizzaControllerTests {
 	}
 
 	@Test
-	void testDeletePizza1() throws Exception {
+	void testCreatePizzaBadRequest() throws Exception {
+		String json = """
+					{
+						"name": "Napolitana"
+					}
+				""";
+
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/api/pizzas").contentType(MediaType.APPLICATION_JSON).content(json))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	@Test
+	void testDeletePizza() throws Exception {
 		long id = 2;
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/pizzas/{id}", id).contentType(MediaType.APPLICATION_JSON))
@@ -66,7 +79,7 @@ class PizzaControllerTests {
 	}
 
 	@Test
-	void testDeletePizza2() throws Exception {
+	void testDeletePizzaNotFound() throws Exception {
 		long id = 99;
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/pizzas/{id}", id).contentType(MediaType.APPLICATION_JSON))

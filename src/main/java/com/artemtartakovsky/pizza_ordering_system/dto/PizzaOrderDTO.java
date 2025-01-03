@@ -4,46 +4,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PizzaOrderDTO {
 	@JsonProperty("id")
-	private long id;
+	private Long id;
 
 	@JsonProperty(required = true)
-	private long pizzaId;
+	private Long pizzaId;
 
 	@JsonProperty(required = true)
-	private int quantity;
+	private Integer quantity;
 
 	public PizzaOrderDTO() {
 
 	}
 
-	public PizzaOrderDTO(long id, long pizzaId, int quantity) {
+	public PizzaOrderDTO(Long id, Long pizzaId, Integer quantity) {
 		super();
 		this.id = id;
 		this.pizzaId = pizzaId;
 		this.quantity = quantity;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getPizzaId() {
+	public Long getPizzaId() {
 		return pizzaId;
 	}
 
-	public void setPizzaId(long pizzaId) {
+	public void setPizzaId(Long pizzaId) {
 		this.pizzaId = pizzaId;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void setQuantity(Integer quantity) {
+		if (quantity > 0) {
+			this.quantity = quantity;
+		}
 	}
 }

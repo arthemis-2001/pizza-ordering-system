@@ -36,11 +36,18 @@ public class PizzaController {
 
 	@PostMapping
 	public ResponseEntity<?> createPizza(@RequestBody Pizza pizza) {
-		Pizza createdPizza = pizzaService.createPizza(pizza);
+		if (pizza.getName() == null || pizza.getPrice() == null) {
+			return ResponseEntity.badRequest().body("Missing required fields: name and price");
+		}
 
-		URI location = URI.create("/api/pizzas/" + createdPizza.getId());
-
-		return ResponseEntity.created(location).body(createdPizza);
+		try {
+			Pizza createdPizza = pizzaService.createPizza(pizza);
+			URI location = URI.create("/api/pizzas/" + createdPizza.getId());
+			return ResponseEntity.created(location).body(createdPizza);
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.badRequest().body("Invalid JSON payload");
+		}
 	}
 
 	@DeleteMapping("/{id}")

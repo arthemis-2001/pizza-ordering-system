@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CustomerDTO {
 	@JsonProperty("id")
-	private long id;
+	private Long id;
 
 	@JsonProperty(required = true)
 	private String name;
@@ -20,7 +20,7 @@ public class CustomerDTO {
 
 	}
 
-	public CustomerDTO(long id, String name, String address, List<OrderDTO> orders) {
+	public CustomerDTO(Long id, String name, String address, List<OrderDTO> orders) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -28,11 +28,11 @@ public class CustomerDTO {
 		this.orders = orders;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

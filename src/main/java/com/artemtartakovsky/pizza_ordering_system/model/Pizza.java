@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Pizza {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column(nullable = false, unique = true, updatable = false)
 	private String name;
@@ -32,18 +32,18 @@ public class Pizza {
 		this.price = price;
 	}
 
-	public Pizza(long id, String name, BigDecimal price) {
+	public Pizza(Long id, String name, BigDecimal price) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -60,7 +60,9 @@ public class Pizza {
 	}
 
 	public void setPrice(BigDecimal price) {
-		this.price = price;
+		if (price.compareTo(BigDecimal.ZERO) >= 0) {
+			this.price = price;
+		}
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import jakarta.persistence.TemporalType;
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Instant createdAt;
@@ -44,7 +44,7 @@ public class Order {
 		this.pizzaOrders = pizzaOrders;
 	}
 
-	public Order(long id, Instant createdAt, Customer customer, List<PizzaOrder> pizzaOrders) {
+	public Order(Long id, Instant createdAt, Customer customer, List<PizzaOrder> pizzaOrders) {
 		super();
 		this.id = id;
 		this.createdAt = createdAt;
@@ -52,11 +52,11 @@ public class Order {
 		this.pizzaOrders = pizzaOrders;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

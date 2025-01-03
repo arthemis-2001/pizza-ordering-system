@@ -1,43 +1,44 @@
 package com.artemtartakovsky.pizza_ordering_system.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OrderDTO {
 	@JsonProperty("id")
-	private long id;
+	private Long id;
 
 	@JsonProperty(required = true)
-	private long customerId;
+	private Long customerId;
 
 	@JsonProperty(required = true)
-	private List<PizzaOrderDTO> pizzaOrders;
+	private List<PizzaOrderDTO> pizzaOrders = new ArrayList<>();
 
 	public OrderDTO() {
 
 	}
 
-	public OrderDTO(long id, long customerId, List<PizzaOrderDTO> pizzaOrders) {
+	public OrderDTO(Long id, Long customerId, List<PizzaOrderDTO> pizzaOrders) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
 		this.pizzaOrders = pizzaOrders;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getCustomerId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(long customerId) {
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 

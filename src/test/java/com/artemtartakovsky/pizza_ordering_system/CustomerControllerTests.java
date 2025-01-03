@@ -22,11 +22,11 @@ class CustomerControllerTests {
 	@Test
 	void testGetAllCustomers() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers")).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2));
 	}
 
 	@Test
-	void testGetCustomerById1() throws Exception {
+	void testGetCustomerById() throws Exception {
 		long id = 1;
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{id}", id).contentType(MediaType.APPLICATION_JSON))
@@ -36,7 +36,7 @@ class CustomerControllerTests {
 	}
 
 	@Test
-	void testGetCustomerById2() throws Exception {
+	void testGetCustomerByIdNotFound() throws Exception {
 		long id = 99;
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{id}", id).contentType(MediaType.APPLICATION_JSON))
@@ -58,7 +58,20 @@ class CustomerControllerTests {
 	}
 
 	@Test
-	void testDeleteCustomer1() throws Exception {
+	void testCreateCustomerBadRequest() throws Exception {
+		String json = """
+					{
+						"address": "10 New Street"
+					}
+				""";
+
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/api/customers").contentType(MediaType.APPLICATION_JSON).content(json))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	@Test
+	void testDeleteCustomer() throws Exception {
 		long id = 2;
 
 		mockMvc.perform(
@@ -67,7 +80,7 @@ class CustomerControllerTests {
 	}
 
 	@Test
-	void testDeleteCustomer2() throws Exception {
+	void testDeleteCustomerNotFound() throws Exception {
 		long id = 99;
 
 		mockMvc.perform(
