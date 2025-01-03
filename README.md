@@ -78,13 +78,13 @@ This app provides the following API endpoints:
 | GET         | `/api/pizzas/{id}`    | Returns a pizza by its id.                                                                   |
 | POST        | `/api/pizzas`         | Takes a JSON request body and creates a pizza. Fields *name* and *price* are mandatory.      |
 | DELETE      | `/api/pizzas/{id}`    | Deletes a pizza by its id.                                                                   |
-| GET         | `/api/customers       | Returns a list of all customers.                                                             |
+| GET         | `/api/customers`      | Returns a list of all customers.                                                             |
 | GET         | `/api/customers/{id}` | Returns a customer by his id.                                                                |
 | POST        | `/api/customers`      | Takes a JSON request body and creates a customer. Fields *name* and *address* are mandatory. |
 | DELETE      | `/api/customers/{id}` | Deletes a customer by its id.                                                                |
 | GET         | `/api/orders`         | Returns a list of all orders.                                                                |
 | GET         | `/api/orders/{id}`    | Returns an order by its id.                                                                  |
-| POST        | `/api/orders`         | Takes a JSON request body and creates an order. Field *customerId* is mandatory, *pizzaOrders* is optional and consists of arrays, each with pizzaId and quantity attributes. |
+| POST        | `/api/orders`         | Takes a JSON request body and creates an order. The field *customerId* is mandatory, *pizzaOrders* is optional and consists of arrays, each with *pizzaId* and *quantity* attributes. |
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
