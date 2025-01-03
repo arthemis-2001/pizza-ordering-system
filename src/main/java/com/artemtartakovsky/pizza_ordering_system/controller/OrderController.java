@@ -1,9 +1,9 @@
 package com.artemtartakovsky.pizza_ordering_system.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,18 +23,20 @@ public class OrderController {
 	public OrderService orderService;
 
 	@GetMapping
-	public ResponseEntity<List<OrderDTO>> getAllOrders() {
+	public ResponseEntity<?> getAllOrders() {
 		return ResponseEntity.ok(orderService.getAllOrders());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
+	public ResponseEntity<?> getOrderById(@PathVariable Long id) {
 		Optional<OrderDTO> order = orderService.getOrderById(id);
 		return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
-		return ResponseEntity.ok(orderService.createOrder(orderDTO));
+	public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+		OrderDTO createdOrder = orderService.createOrder(orderDTO);
+
+		return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
 	}
 }

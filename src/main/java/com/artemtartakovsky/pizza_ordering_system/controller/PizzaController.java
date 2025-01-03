@@ -1,6 +1,6 @@
 package com.artemtartakovsky.pizza_ordering_system.controller;
 
-import java.util.List;
+import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +24,33 @@ public class PizzaController {
 	public PizzaService pizzaService;
 
 	@GetMapping
-	public List<Pizza> getAllPizzas() {
-		return pizzaService.getAllPizzas();
+	public ResponseEntity<?> getAllPizzas() {
+		return ResponseEntity.ok(pizzaService.getAllPizzas());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Pizza> getPizzaById(@PathVariable Long id) {
+	public ResponseEntity<?> getPizzaById(@PathVariable Long id) {
 		Optional<Pizza> pizza = pizzaService.getPizzaById(id);
 		return pizza.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public Pizza createPizza(@RequestBody Pizza pizza) {
-		return pizzaService.createPizza(pizza);
+	public ResponseEntity<?> createPizza(@RequestBody Pizza pizza) {
+		Pizza createdPizza = pizzaService.createPizza(pizza);
+
+		URI location = URI.create("/api/pizzas/" + createdPizza.getId());
+
+		return ResponseEntity.created(location).body(createdPizza);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePizza(@PathVariable Long id) {
-		pizzaService.deletePizza(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<?> deletePizza(@PathVariable Long id) {
+		try {
+			pizzaService.deletePizza(id);
+			return ResponseEntity.noContent().build();
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

@@ -28,12 +28,9 @@ public class CustomerService {
 		return customerRepository.findById(id).map(CustomerService::convertToDTO);
 	}
 
-	public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-		Customer customer = new Customer();
-		customer.setName(customerDTO.getName());
-		customer.setAddress(customerDTO.getAddress());
-		customerRepository.save(customer);
-		return customerDTO;
+	public Customer createCustomer(CustomerDTO customerDTO) {
+		Customer customer = customerRepository.save(new Customer(customerDTO.getName(), customerDTO.getAddress()));
+		return customer;
 	}
 
 	public void deleteCustomer(Long id) {

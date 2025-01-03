@@ -32,6 +32,12 @@ public class Customer {
 
 	}
 
+	public Customer(String name, String address) {
+		super();
+		this.name = name;
+		this.address = address;
+	}
+
 	public Customer(long id, String name, String address, List<Order> orders) {
 		super();
 		this.id = id;

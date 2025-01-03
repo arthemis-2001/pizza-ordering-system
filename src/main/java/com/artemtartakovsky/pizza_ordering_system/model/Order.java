@@ -38,6 +38,12 @@ public class Order {
 
 	}
 
+	public Order(Customer customer, List<PizzaOrder> pizzaOrders) {
+		super();
+		this.customer = customer;
+		this.pizzaOrders = pizzaOrders;
+	}
+
 	public Order(long id, Instant createdAt, Customer customer, List<PizzaOrder> pizzaOrders) {
 		super();
 		this.id = id;

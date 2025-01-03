@@ -1,10 +1,11 @@
 package com.artemtartakovsky.pizza_ordering_system.controller;
 
-import java.util.List;
+import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.artemtartakovsky.pizza_ordering_system.dto.CustomerDTO;
+import com.artemtartakovsky.pizza_ordering_system.model.Customer;
 import com.artemtartakovsky.pizza_ordering_system.service.CustomerService;
 
 @RestController
@@ -23,18 +25,33 @@ public class CustomerController {
 	private CustomerService customerService;
 
 	@GetMapping
-	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+	public ResponseEntity<?> getAllCustomers() {
 		return ResponseEntity.ok(customerService.getAllCustomers());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+	public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
 		Optional<CustomerDTO> customer = customerService.getCustomerById(id);
 		return customer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
-		return ResponseEntity.ok(customerService.createCustomer(customerDTO));
+	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
+		Customer createdCustomer = customerService.createCustomer(customerDTO);
+
+		URI location = URI.create("/api/customers/" + createdCustomer.getId());
+
+		return ResponseEntity.created(location).body(createdCustomer);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
+		try {
+			customerService.deleteCustomer(id);
+			return ResponseEntity.noContent().build();
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

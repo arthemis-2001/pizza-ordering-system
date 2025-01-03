@@ -26,6 +26,12 @@ public class Pizza {
 
 	}
 
+	public Pizza(String name, BigDecimal price) {
+		super();
+		this.name = name;
+		this.price = price;
+	}
+
 	public Pizza(long id, String name, BigDecimal price) {
 		super();
 		this.id = id;
