@@ -38,7 +38,7 @@ public class CustomerController {
 	@PostMapping
 	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
 		if (customerDTO.getName() == null || customerDTO.getAddress() == null) {
-			return ResponseEntity.badRequest().body("Missing required fields: name and price");
+			return ResponseEntity.badRequest().body("Missing required fields: name and address");
 		}
 
 		try {
