@@ -82,6 +82,7 @@ public class OrderService {
 		OrderDTO orderDTO = new OrderDTO();
 		orderDTO.setId(order.getId());
 		orderDTO.setCustomerId(order.getCustomer().getId());
+		orderDTO.setCreatedAt(order.getCreatedAt());
 		orderDTO.setPizzaOrders(
 				order.getPizzaOrders().stream().map(OrderService::convertToDTO).collect(Collectors.toList()));
 		return orderDTO;
